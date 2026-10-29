@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f5ead8">
+<title>Canavida · Guest messages</title>
+<link rel="stylesheet" href="_ds/organic-b2e5afeb-caf8-45af-8551-e63728dc5431/styles.css">
+<script src="_ds/organic-b2e5afeb-caf8-45af-8551-e63728dc5431/_ds_bundle.js"></script>
+<script src="faq-data.js?v=3"></script>
+<style>html,body{margin:0;background:var(--color-bg);-webkit-tap-highlight-color:transparent}a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}button{font:inherit}</style>
+</helmet>
+<div style="min-height:100vh;display:flex;justify-content:center;background:var(--color-bg);color:var(--color-text);font-family:var(--font-body)">
+<div style="width:100%;max-width:480px;min-height:100vh;display:flex;flex-direction:column;position:relative">
+
+<header style="position:sticky;top:0;z-index:5;background:var(--color-bg);display:flex;align-items:center;gap:var(--space-2);padding:var(--space-3) var(--space-4)">
+<div style="display:flex;flex-direction:column;margin-right:auto;cursor:pointer;min-width:0" onClick="{{ goHome }}">
+<span style="font-family:var(--font-heading);font-size:22px;line-height:1.1">Canavida</span>
+<span style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--color-accent-2-700)">{{ ui.tagline }}</span>
+</div>
+<button class="btn btn-secondary btn-icon" aria-label="{{ ui.search }}" onClick="{{ openSearch }}" style="width:44px;height:44px">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+</button>
+<div class="seg" role="radiogroup" aria-label="Language" style="height:44px">
+<label class="seg-opt" style="padding:0 14px;font-weight:700"><input type="radio" name="lang" checked="{{ isEn }}" onChange="{{ setEn }}">EN</label>
+<label class="seg-opt" style="padding:0 14px;font-weight:700"><input type="radio" name="lang" checked="{{ isEs }}" onChange="{{ setEs }}">ES</label>
+<label class="seg-opt" style="padding:0 14px;font-weight:700"><input type="radio" name="lang" checked="{{ isFr }}" onChange="{{ setFr }}">FR</label>
+</div>
+</header>
+
+<sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+<main style="display:flex;flex-direction:column;gap:var(--space-4);padding:var(--space-2) var(--space-4) var(--space-8)">
+<div style="display:flex;flex-direction:column;gap:var(--space-2);padding-top:var(--space-2)">
+<h1 style="font-size:34px;margin:0;text-wrap:pretty">{{ ui.homeTitle }}</h1>
+<p style="margin:0;font-size:15px;color:var(--color-neutral-700);text-wrap:pretty">{{ homeSub }}</p>
+</div>
+<button onClick="{{ openSearch }}" style="display:flex;align-items:center;gap:10px;width:100%;height:50px;padding:0 18px;border-radius:999px;border:1px solid var(--color-divider);background:var(--color-surface);color:var(--color-neutral-700);font-size:15px;cursor:pointer;text-align:left" style-hover="border-color:var(--color-accent-400)">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+<span>{{ ui.searchPlaceholder }}</span>
+</button>
+<div style="display:flex;flex-direction:column;gap:var(--space-2)">
+<sc-for list="{{ cats }}" as="c" hint-placeholder-count="9">
+<button onClick="{{ c.open }}" style="display:flex;align-items:center;gap:var(--space-3);width:100%;padding:var(--space-3);border:0;border-radius:var(--radius-lg);background:var(--color-surface);color:var(--color-text);cursor:pointer;text-align:left;min-height:76px" style-hover="background:var(--color-neutral-300)" style-active="background:var(--color-neutral-400)">
+<span style="flex:none;width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font-family:var(--font-heading);font-size:17px;background:{{ c.bg }};color:{{ c.fg }}">{{ c.num }}</span>
+<span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+<span style="font-family:var(--font-heading);font-size:17px;line-height:1.2">{{ c.name }}</span>
+<span style="font-size:13px;line-height:1.35;color:var(--color-neutral-700)">{{ c.desc }}</span>
+</span>
+<span class="tag tag-neutral" style="flex:none;font-weight:700">{{ c.count }}</span>
+</button>
+</sc-for>
+</div>
+</main>
+</sc-if>
+
+<sc-if value="{{ isCat }}" hint-placeholder-val="{{ false }}">
+<main style="display:flex;flex-direction:column;gap:var(--space-3);padding:0 var(--space-4) var(--space-8)">
+<button class="btn btn-ghost" onClick="{{ goHome }}" style="align-self:flex-start;height:44px;padding:0 10px 0 4px;white-space:nowrap;gap:4px">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg><span style="white-space:nowrap">{{ ui.allCats }}</span></button>
+<div style="display:flex;align-items:center;gap:var(--space-3)">
+<span style="flex:none;width:56px;height:56px;border-radius:50%;display:grid;place-items:center;font-family:var(--font-heading);font-size:20px;background:{{ cat.bg }};color:{{ cat.fg }}">{{ cat.num }}</span>
+<div style="display:flex;flex-direction:column;gap:2px">
+<h2 style="font-size:28px;margin:0">{{ cat.name }}</h2>
+<span style="font-size:13px;color:var(--color-neutral-700)">{{ cat.countLabel }}</span>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:var(--space-2);margin-top:var(--space-2)">
+<sc-for list="{{ catItems }}" as="it" hint-placeholder-count="6">
+<button onClick="{{ it.open }}" style="display:flex;align-items:center;gap:var(--space-3);width:100%;padding:var(--space-3) var(--space-3) var(--space-3) var(--space-4);border:0;border-radius:var(--radius-md);background:var(--color-surface);color:var(--color-text);cursor:pointer;text-align:left;min-height:56px" style-hover="background:var(--color-neutral-300)" style-active="background:var(--color-neutral-400)">
+<span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px">
+<span style="font-weight:700;font-size:15px;line-height:1.3">{{ it.title }}</span>
+<sc-if value="{{ showPreview }}" hint-placeholder-val="{{ true }}">
+<span style="font-size:13px;line-height:1.4;color:var(--color-neutral-700);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">{{ it.preview }}</span>
+</sc-if>
+</span>
+<svg style="flex:none;color:var(--color-accent)" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg>
+</button>
+</sc-for>
+</div>
+</main>
+</sc-if>
+
+<sc-if value="{{ isDetail }}" hint-placeholder-val="{{ false }}">
+<main style="flex:1;display:flex;flex-direction:column;gap:var(--space-3);padding:0 var(--space-4) var(--space-4)">
+<button class="btn btn-ghost" onClick="{{ goBackToCat }}" style="align-self:flex-start;height:44px;padding:0 10px 0 4px;white-space:nowrap;gap:4px">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg><span style="white-space:nowrap">{{ detail.catName }}</span></button>
+<h2 style="font-size:28px;margin:0;text-wrap:pretty">{{ detail.title }}</h2>
+<sc-if value="{{ detail.hasNote }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;gap:8px;align-items:flex-start;padding:10px 14px;border-radius:var(--radius-md);background:var(--color-accent-100);color:var(--color-accent-800);font-size:13px;line-height:1.4">
+<svg style="flex:none;margin-top:1px" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+<span>{{ detail.note }}</span>
+</div>
+</sc-if>
+<div style="padding:var(--space-4);border-radius:var(--radius-lg);background:var(--color-neutral-100);box-shadow:var(--shadow-sm);font-size:15px;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere;user-select:text">{{ detail.body }}</div>
+<div style="position:sticky;bottom:0;display:flex;gap:var(--space-2);padding:var(--space-3) 0 calc(var(--space-3) + env(safe-area-inset-bottom));background:var(--color-bg);margin-top:auto">
+<button class="btn btn-primary" onClick="{{ copy }}" style="flex:1;height:50px;font-size:16px">
+<sc-if value="{{ copied }}" hint-placeholder-val="{{ false }}">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+</sc-if>
+<sc-if value="{{ notCopied }}" hint-placeholder-val="{{ true }}">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>
+</sc-if>
+{{ copyLabel }}
+</button>
+<button class="btn btn-secondary" onClick="{{ shareWa }}" style="flex:1;height:50px;font-size:16px;background:var(--color-accent-2-200);border-color:transparent;color:var(--color-accent-2-900)" style-hover="background:var(--color-accent-2-300)" style-active="background:var(--color-accent-2-400)">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"></path></svg>WhatsApp
+</button>
+</div>
+</main>
+</sc-if>
+
+<sc-if value="{{ searchOpen }}" hint-placeholder-val="{{ false }}">
+<div style="position:fixed;inset:0;z-index:20;display:flex;justify-content:center;background:color-mix(in srgb, var(--color-neutral-900) 40%, transparent)">
+<div style="width:100%;max-width:480px;height:100%;display:flex;flex-direction:column;background:var(--color-bg);box-shadow:var(--shadow-lg)">
+<div style="display:flex;align-items:center;gap:var(--space-2);padding:var(--space-3) var(--space-4)">
+<div style="flex:1;position:relative;display:flex;align-items:center">
+<svg style="position:absolute;left:16px;color:var(--color-neutral-600);pointer-events:none" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+<input class="input" ref="{{ searchRef }}" type="search" value="{{ q }}" onChange="{{ onQuery }}" placeholder="{{ ui.searchPlaceholder }}" style="height:48px;padding-left:44px;font-size:16px">
+</div>
+<button class="btn btn-ghost" onClick="{{ closeSearch }}" style="height:44px;padding:0 10px">{{ ui.cancel }}</button>
+</div>
+<div style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:var(--space-2);padding:0 var(--space-4) var(--space-6)">
+<sc-if value="{{ hasQuery }}" hint-placeholder-val="{{ false }}">
+<span style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:var(--color-neutral-700);padding:4px 2px">{{ resultsLabel }}</span>
+</sc-if>
+<sc-if value="{{ noQuery }}" hint-placeholder-val="{{ true }}">
+<span style="font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:var(--color-neutral-700);padding:4px 2px">{{ ui.tryLabel }}</span>
+<div style="display:flex;flex-wrap:wrap;gap:var(--space-2)">
+<sc-for list="{{ suggestions }}" as="s" hint-placeholder-count="6">
+<button class="tag tag-accent-2" onClick="{{ s.pick }}" style="border:0;cursor:pointer;font-size:14px;padding:8px 14px;min-height:36px" style-hover="background:var(--color-accent-2-200)">{{ s.label }}</button>
+</sc-for>
+</div>
+</sc-if>
+<sc-for list="{{ results }}" as="r" hint-placeholder-count="0">
+<button onClick="{{ r.open }}" style="display:flex;flex-direction:column;gap:5px;width:100%;padding:var(--space-3) var(--space-4);border:0;border-radius:var(--radius-md);background:var(--color-surface);color:var(--color-text);cursor:pointer;text-align:left" style-hover="background:var(--color-neutral-300)">
+<span style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+<span style="font-weight:700;font-size:15px;line-height:1.3">{{ r.title }}</span>
+<span class="tag tag-accent" style="font-size:10px;padding:2px 8px">{{ r.catName }}</span>
+</span>
+<span style="font-size:13px;line-height:1.45;color:var(--color-neutral-800)"><sc-for list="{{ r.parts }}" as="p" hint-placeholder-count="1"><span style="{{ p.style }}">{{ p.text }}</span></sc-for></span>
+</button>
+</sc-for>
+<sc-if value="{{ noResults }}" hint-placeholder-val="{{ false }}">
+<div style="padding:var(--space-6) var(--space-2);display:flex;flex-direction:column;gap:6px">
+<span style="font-family:var(--font-heading);font-size:20px">{{ ui.noResultsTitle }}</span>
+<span style="font-size:14px;color:var(--color-neutral-700)">{{ ui.noResultsBody }}</span>
+</div>
+</sc-if>
+</div>
+</div>
+</div>
+</sc-if>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;defaultLang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;es&quot;,&quot;fr&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;'en' | 'es' | 'fr'&quot;},&quot;showPreview&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+const UI = {
+  en: { tagline: 'Guest messages', search: 'Search', searchPlaceholder: 'Search messages, e.g. wifi, airport, laundry', homeTitle: 'Message library', homeSub: '{n} ready-to-send guest messages, sorted by topic.', allCats: 'All categories', messages: 'messages', copy: 'Copy message', copied: 'Copied', cancel: 'Cancel', results: 'results', result: 'result', tryLabel: 'Popular searches', noResultsTitle: 'Nothing found', noResultsBody: 'Try another word, or search in the other language.', onlyEn: 'This message only exists in English in the source document.', onlyEs: 'This message only exists in Spanish in the source document.' },
+  es: { tagline: 'Mensajes a huéspedes', search: 'Buscar', searchPlaceholder: 'Buscar mensajes, ej. wifi, aeropuerto', homeTitle: 'Biblioteca de mensajes', homeSub: '{n} mensajes listos para enviar, ordenados por tema.', allCats: 'Todas las categorías', messages: 'mensajes', copy: 'Copiar mensaje', copied: 'Copiado', cancel: 'Cancelar', results: 'resultados', result: 'resultado', tryLabel: 'Búsquedas frecuentes', noResultsTitle: 'Sin resultados', noResultsBody: 'Pruebe otra palabra o busque en el otro idioma.', onlyEn: 'Este mensaje solo existe en inglés en el documento original.', onlyEs: 'Este mensaje solo existe en español en el documento original.' }
+};
+UI.fr = { tagline: 'Messages clients', search: 'Rechercher', searchPlaceholder: 'Rechercher, ex. wifi, aéroport, linge', homeTitle: 'Bibliothèque de messages', homeSub: '{n} messages prêts à envoyer, classés par thème.', allCats: 'Toutes les catégories', messages: 'messages', copy: 'Copier le message', copied: 'Copié', cancel: 'Annuler', results: 'résultats', result: 'résultat', tryLabel: 'Recherches fréquentes', noResultsTitle: 'Aucun résultat', noResultsBody: 'Essayez un autre mot ou une autre langue.', onlyEn: 'Ce message n’existe qu’en anglais dans le document source.', onlyEs: 'Ce message n’existe qu’en espagnol dans le document source.' };
+const SUGGEST = { en: ['WiFi', 'Airport', 'Late check-out', 'Laundry', 'Pets', 'Hot water', '4x4', 'Whale'], es: ['WiFi', 'Aeropuerto', 'Salida tardía', 'Lavandería', 'Mascotas', 'Agua caliente', '4x4', 'Ballenas'], fr: ['WiFi', 'Aéroport', 'Départ tardif', 'Blanchisserie', 'Animaux', 'Eau chaude', '4x4', 'Baleines'] };
+const LANGS = ['en', 'es', 'fr'];
+const DESC = { en: 'den', es: 'des', fr: 'dfr' };
+const TONES = [['var(--color-accent-200)', 'var(--color-accent-800)'], ['var(--color-accent-2-200)', 'var(--color-accent-2-800)'], ['var(--color-neutral-300)', 'var(--color-neutral-800)']];
+const fold = s => { let o = ''; for (const ch of s) { const n = ch.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase(); o += n.length === ch.length ? n : ch.toLowerCase().slice(0, ch.length).padEnd(ch.length, ' '); } return o; };
+
+class Component extends DCLogic {
+  state = { data: window.CANAVIDA_FAQ || null, lang: null, route: { view: 'home' }, searchOpen: false, q: '', copied: false };
+  searchRef = React.createRef();
+
+  componentDidMount() {
+    let saved = null; try { saved = localStorage.getItem('canavida-lang'); } catch (e) {}
+    this.setState({ lang: saved || this.props.defaultLang || 'en', route: this.parseHash() });
+    if (!this.state.data) this.poll = setInterval(() => { if (window.CANAVIDA_FAQ) { clearInterval(this.poll); this.setState({ data: window.CANAVIDA_FAQ }); } }, 50);
+    this.onHash = () => this.setState({ route: this.parseHash(), copied: false });
+    window.addEventListener('hashchange', this.onHash);
+  }
+  componentWillUnmount() { clearInterval(this.poll); window.removeEventListener('hashchange', this.onHash); }
+  componentDidUpdate(pp, ps) { if (this.state.searchOpen && !ps.searchOpen && this.searchRef.current) this.searchRef.current.focus(); }
+
+  parseHash() {
+    const h = (location.hash || '').replace(/^#\/?/, '').split('/');
+    if (h[0] === 'c' && h[1]) return { view: 'cat', id: h[1] };
+    if (h[0] === 'm' && h[1]) return { view: 'detail', id: h[1] };
+    return { view: 'home' };
+  }
+  go(path) { if (location.hash !== path) location.hash = path; else this.setState({ route: this.parseHash() }); window.scrollTo(0, 0); }
+  setLang(l) { try { localStorage.setItem('canavida-lang', l); } catch (e) {} this.setState({ lang: l }); }
+
+  text(item, lang) { if (item.b[lang]) return { body: item.b[lang], fallback: null }; const other = item.b.en ? 'en' : 'es'; return { body: item.b[other], fallback: other }; }
+
+  search(q, lang) {
+    const { items, categories } = this.state.data; const fq = fold(q.trim()); if (!fq) return [];
+    const catName = Object.fromEntries(categories.map(c => [c.id, c[lang]]));
+    const out = [];
+    for (const it of items) {
+      const title = it.t[lang]; const prim = this.text(it, lang).body; const other = LANGS.filter(l => l !== lang).map(l => it.b[l] || '').join('\n');
+      const hay = [fold(LANGS.map(l => it.t[l] || '').join(' ')), fold(prim), fold(other)];
+      const score = hay[0].includes(fq) ? 3 : hay[1].includes(fq) ? 2 : hay[2].includes(fq) ? 1 : 0;
+      if (!score) continue;
+      const src = score === 1 ? other : prim; const fsrc = score === 1 ? hay[2] : hay[1];
+      let i = fsrc.indexOf(fq); let parts;
+      if (i < 0) { parts = [{ text: src.slice(0, 140).replace(/\n/g, ' ') + (src.length > 140 ? '…' : ''), style: '' }]; }
+      else {
+        const a = Math.max(0, i - 50), b = Math.min(src.length, i + fq.length + 90);
+        parts = [{ text: (a > 0 ? '…' : '') + src.slice(a, i).replace(/\n/g, ' '), style: '' }, { text: src.slice(i, i + fq.length), style: 'background:var(--color-accent-200);color:var(--color-accent-900);border-radius:4px;padding:0 2px;font-weight:700' }, { text: src.slice(i + fq.length, b).replace(/\n/g, ' ') + (b < src.length ? '…' : ''), style: '' }];
+      }
+      out.push({ score, id: it.id, title, catName: catName[it.cat], parts, open: () => { this.setState({ searchOpen: false }); this.go('#/m/' + it.id); } });
+    }
+    return out.sort((x, y) => y.score - x.score).slice(0, 40);
+  }
+
+  renderVals() {
+    const lang = this.state.lang || this.props.defaultLang || 'en';
+    const ui = UI[lang]; const data = this.state.data || { categories: [], items: [] };
+    const route = this.state.route; const showPreview = this.props.showPreview ?? true;
+    const cats = data.categories.map((c, i) => {
+      const count = data.items.filter(it => it.cat === c.id).length; const [bg, fg] = TONES[i % 3];
+      return { id: c.id, name: c[lang], desc: c[DESC[lang]] || c.den, count, num: String(i + 1).padStart(2, '0'), bg, fg, countLabel: count + ' ' + ui.messages, open: () => this.go('#/c/' + c.id) };
+    });
+    let cat = cats[0] || {}, catItems = [], detail = { title: '', body: '', catName: '', hasNote: false, note: '' };
+    const preview = it => this.text(it, lang).body.replace(/\n/g, ' ');
+    if (route.view === 'cat') { cat = cats.find(c => c.id === route.id) || cat; catItems = data.items.filter(it => it.cat === cat.id).map(it => ({ id: it.id, title: it.t[lang], preview: preview(it), open: () => this.go('#/m/' + it.id) })); }
+    let current = null;
+    if (route.view === 'detail') {
+      current = data.items.find(it => it.id === route.id);
+      if (current) { const tx = this.text(current, lang); const c = cats.find(c => c.id === current.cat); cat = c;
+        detail = { title: current.t[lang], body: tx.body, catName: c ? c.name : '', hasNote: !!tx.fallback, note: tx.fallback === 'en' ? ui.onlyEn : ui.onlyEs }; }
+    }
+    const results = this.state.searchOpen ? this.search(this.state.q, lang) : [];
+    const hasQuery = !!this.state.q.trim();
+    return {
+      ui, cats, cat, catItems, detail, showPreview, results,
+      homeSub: ui.homeSub.replace('{n}', data.items.length),
+      isEn: lang === 'en', isEs: lang === 'es', isFr: lang === 'fr',
+      setEn: () => this.setLang('en'), setEs: () => this.setLang('es'), setFr: () => this.setLang('fr'),
+      isHome: !(route.view === 'cat' && data.categories.some(c => c.id === route.id)) && !(route.view === 'detail' && !!current),
+      isCat: route.view === 'cat' && data.categories.some(c => c.id === route.id),
+      isDetail: route.view === 'detail' && !!current,
+      goHome: () => this.go('#/'),
+      goBackToCat: () => this.go(current ? '#/c/' + current.cat : '#/'),
+      copied: this.state.copied, notCopied: !this.state.copied,
+      copyLabel: this.state.copied ? ui.copied : ui.copy,
+      copy: () => {
+        const t = detail.body; const done = () => { this.setState({ copied: true }); clearTimeout(this.ct); this.ct = setTimeout(() => this.setState({ copied: false }), 1800); };
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(done, () => { this.fallbackCopy(t); done(); }); else { this.fallbackCopy(t); done(); }
+      },
+      shareWa: () => window.open('https://wa.me/?text=' + encodeURIComponent(detail.body), '_blank'),
+      searchOpen: this.state.searchOpen, searchRef: this.searchRef, q: this.state.q,
+      openSearch: () => this.setState({ searchOpen: true }),
+      closeSearch: () => this.setState({ searchOpen: false, q: '' }),
+      onQuery: e => this.setState({ q: e.target.value }),
+      hasQuery, noQuery: !hasQuery, noResults: hasQuery && results.length === 0,
+      resultsLabel: results.length + ' ' + (results.length === 1 ? ui.result : ui.results),
+      suggestions: SUGGEST[lang].map(label => ({ label, pick: () => this.setState({ q: label }) }))
+    };
+  }
+  fallbackCopy(t) { const ta = document.createElement('textarea'); ta.value = t; ta.style.position = 'fixed'; ta.style.opacity = '0'; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); } catch (e) {} ta.remove(); }
+}
+</script>
+</body>
+</html>
